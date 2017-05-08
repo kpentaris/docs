@@ -1,0 +1,72 @@
+<copy todir="${itw-webroot.dir}/Scripts/ith">
+	<fileset dir="${ith-src.dir}/dist/webroot/ith">
+		<exclude name="*.js.map"/>
+	</fileset>
+</copy>
+
+<mkdir dir="${itw-webroot.dir}/Scripts/ith"/>
+
+<zip destfile="ith.ax8-8.1.zip" basedir="dist/"/>
+
+<unzip src="${trunk_path}/installer/stage/ImageTrust-apache-tomcat-8.0.39-x86.zip" dest="${itw-server.dir}"/>
+
+<target name="make-full-dist-no-cleanup" depends="-init"></target>
+
+<delete dir="dist"/>
+
+<fail unless="trunk_path">Missing parameter: trunk_path</fail>
+
+<available file="${trunk_path}/src/server-itw/build/web/WEB-INF/web.xml" property="server-itw-webapp.present"/>
+
+<property name="ith-src.dir" value="../../"/>
+
+<fail message="brand_name must be either 'imagetrust' or 'kodak'">
+  <condition>
+	<and>
+	  <not>
+		<equals arg1="${brand_name}" arg2="imagetrust" casesensitive="true" />
+	  </not>
+	  <not>
+		<equals arg1="${brand_name}" arg2="kodak" casesensitive="true" />
+	  </not>
+	</and>
+  </condition>
+</fail>
+
+<exec executable="webpack.cmd" failonerror="true">
+  <arg value="--config"/>
+  <arg value="webpack.dll.js"/>
+   <env key="PROD_ENV" value="true"/>
+</exec>
+
+<move todir="${itw-sourcemaps.dir}">
+  <fileset dir="${itw-webroot.dir}/ith">
+	<include name="**/*.js.map"/>
+  </fileset>
+</move>
+
+<condition property="doc.manual.filename" value="ImageTrust HTML5 Transactional Client - Manual.pdf">
+  <equals arg1="${brand_name}" arg2="imagetrust" casesensitive="true" />
+</condition>
+<condition property="doc.manual.filename" value="Kodak Info Input HTML5 Transactional Client - Manual.pdf">
+  <equals arg1="${brand_name}" arg2="kodak" casesensitive="true" />
+</condition>
+<copy todir="dist/documentation" file="${basedir}/../../docs/manual/ITH-TC Manual/dist/${doc.manual.filename}" />
+
+<ant antfile="build.xml" target="jar" dir="${basedir}/../ittc-lic-server">
+  <property name="do_obfuscation" value="true"/>
+</ant>
+
+<concat destfile="dist/custom-plugin-example/nbproject/project.properties" append="true">file.reference.common.jar=../ith-server/webapp/WEB-INF/lib/common.jar
+file.reference.WEB-INF-classes=../ith-server/webapp/WEB-INF/classes</concat>
+
+<taskdef name="launch4j"
+  classname="net.sf.launch4j.ant.Launch4jTask"
+  classpath="${launch4j.dir}/launch4j.jar
+	  :${launch4j.dir}/lib/xstream.jar" />
+<launch4j configFile="${basedir}/../ittc/customer.stage/launch4j.admintool.config.xml" outfile="${licenseserver-tools.dir}/admintool.exe"/>
+
+<replaceregexp
+	file="${appXtender_path}/App/Controllers/document.js.tmp"
+	match="\) \{"
+	replace=") {$scope.resolvePageContent = resolvePageContent;$scope.checkAnnoStatus = checkAnnoStatus;"/>
