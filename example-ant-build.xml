@@ -4,6 +4,8 @@
 	</fileset>
 </copy>
 
+<copy file="integration.js" tofile="integration.js.tmp" overwrite="true" />
+
 <mkdir dir="${itw-webroot.dir}/Scripts/ith"/>
 
 <zip destfile="ith.ax8-8.1.zip" basedir="dist/"/>
@@ -32,6 +34,27 @@
 	</and>
   </condition>
 </fail>
+
+<if>
+	<not>
+		<isset property="manifest-OK"/>
+	</not>
+	<then>
+        <if>
+          <available file="${version-file}"/>
+          <then>
+            <echo message="Getting version from version file"/>
+          </then>
+          <else>
+            <echo message="Generating version from working copy"/>
+          </else>
+        </if>
+        <echo message="Whatever"/>
+	</then>
+	<else>
+		<echo message="Have already created manifest file"/>
+	</else>
+</if>
 
 <exec executable="webpack.cmd" failonerror="true">
   <arg value="--config"/>
@@ -70,3 +93,8 @@ file.reference.WEB-INF-classes=../ith-server/webapp/WEB-INF/classes</concat>
 	file="${appXtender_path}/App/Controllers/document.js.tmp"
 	match="\) \{"
 	replace=") {$scope.resolvePageContent = resolvePageContent;$scope.checkAnnoStatus = checkAnnoStatus;"/>
+
+<replace file="integration.js"
+                 token="srvBaseUrl: &quot;http://localhost:8080/server-itw/rest/v1.0/&quot;"
+                 value="srvBaseUrl: &quot;http://localhost:8199/ith-server/rest/v1.0/&quot;" />
+
