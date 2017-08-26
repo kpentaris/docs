@@ -1,0 +1,3 @@
+Bash
+Find filtered files and execute delete on them
+find ./ -maxdepth 10 -name "*.js.map" -delete
