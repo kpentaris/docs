@@ -1,3 +1,8 @@
 Bash
 Find filtered files and execute delete on them
 find ./ -maxdepth 10 -name "*.js.map" -delete
+
+
+POWERSHELL
+Set the network to Private
+Set-NetConnectionProfile -name "Unidentified network" -networkcategory private
