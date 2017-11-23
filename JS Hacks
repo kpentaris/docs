@@ -1,0 +1,2 @@
+1. Although there are readonly properties in Javascript (for example Event.target) and Object.assign(event, {target: customValue})
+   might throw an exception, it is possible that Object.defineProperty(event, "target", {value: customValue}) might bypass it
