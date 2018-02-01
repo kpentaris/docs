@@ -6,6 +6,11 @@
 
 <copy file="integration.js" tofile="integration.js.tmp" overwrite="true" />
 
+<!-- To properly copy a whole directory and not just the contents -->
+<copy todir="target">
+            <fileset dir="basedir" includes="lib/**,nbproject/**,src/**,test/**,build.xml"/>
+        </copy>
+
 <mkdir dir="${itw-webroot.dir}/Scripts/ith"/>
 
 <zip destfile="ith.ax8-8.1.zip" basedir="dist/"/>
