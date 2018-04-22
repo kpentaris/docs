@@ -1,5 +1,9 @@
 #find transversals algorithm
 
+def submatrix(matrix, removed_row):
+    new_matrix = [row[1:] for row in matrix]
+    return new_matrix[0:removed_row] + new_matrix[removed_row + 1:]
+
 def find_transversals(matrix, existing):
     if len(matrix) is 0:
         existing.append(existing[-1][:-1])
