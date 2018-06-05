@@ -1,0 +1,4 @@
+Creating a custom RSA certificate with key:
+
+openssl genrsa -out ca.key 4096 <- creates the private key
+openssl req -new -x509 -days 10000 -key ca.key -out ca.crt <- creates the certificate
