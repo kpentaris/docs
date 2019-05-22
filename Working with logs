@@ -1,0 +1,40 @@
+This article contains information and examples on how to work with log files using Bash tools such as cat , grep , less  and awk . This is the fastest way to parse and filter logs and also the most powerful. This article can be used as a command cheat sheet for basic log parsing actions.
+
+Printing a log file
+The program used for printing a log file is cat . The command is the following:
+
+cat mylogfile.log
+Note that this will print the whole log content into the console. This is usually not ideal, this is why the less  program should be used:
+
+less mylogfile.log  or cat mylogfile.log | less
+less  allows for printing only X amount of lines depending on the available space and moving around them as if it was opened by an editor (with Vim commands available as well).
+
+Filtering log file lines
+Printing the whole log file is usually not what is needed. Instead filtering through it for specific information is what we want. This can be done either filtering for the information or filtering out unneeded information. For such operations we pipe the log file content through grep  and use regular expressions in order to decide what to show/hide.
+
+cat mylogfile.log | grep ERROR | less
+will show only lines that contain ERROR  (case sensitive).
+
+Using the -v  flag will instead filter out all lines that match the Regex.
+
+cat mylogfile.log | grep -v ERROR | less
+It is possible to combine multiple expressions in order to filter out different types of lines.
+
+cat mylogfile.log | grep -v log | grep -v DEBUG | less
+Note that grep  expressions match lines not only the content.
+
+Filtering multiline content
+Sometimes it is usefull to filter out multiline content (usually filtering out whole stack traces). grep  isn't the best tool for this so we use an awk  hack instead.
+
+cat mylogfile.log | awk '/scanserver\.exceptions\.ScanServerException/,/java\.lang\.Thread/ {next} {print}' | less
+This will filter out all lines between any line that contains scanserver.exceptions.ScanServerException  and java.lang.Thread . What actually happens is that awk  matches the first Regex (between the forward slashes) and the second Regex (the slashes after the comma) and using {next} it skips the content and using {print} it prints the rest.
+
+Combining multiple log files
+All of the above can be used to parse multiple log files. This is done by using a for loop that will pipe all the file contents through our grep s and into less .
+
+{ for i in $(ls -1 -t -r logfileprefix*); do cat $i; done; } | grep ERROR | less
+This will parse all files starting with logfileprefix . Note that the -t  flag sorts files by last modified and the -r  flag reversed the sort so that the oldest file comes first (which is what we want for our logs for proper time continuity).
+
+Using Less
+Once the log content is open in less  it can be traversed using the arrow keys or HJKL (Vim shortcuts). The content can also be searched on using regular expressions. To trigger this we press forward slash followed by the regular expression and then RETURN . This will highlight all detected content that matches the expression. Navigating to the next match is done by pressing the 'n'  key while going to the previous match by pressing the 'N'  key.
+
