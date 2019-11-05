@@ -1,9 +1,7 @@
 # List of useful VIM commands
 
- * cut(d), yank(y), change(c) from cursor untill X character:
- 
+ * cut(d), yank(y), change(c) from cursor untill X character:<br>
    `ytX` e.g. |obj["prop"] -> `yt]` will copy obj["prop"] into the buffer<br>
-              ^cursor<br>
    If there are multiple X characters before the target character use VIM command multipliers
    `3ytX` e.g. |obj["propA"]["propB"]["propC"] -> `3yt]` will copy obj["propA"]["propB"]["propC"]
    
