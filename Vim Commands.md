@@ -9,3 +9,5 @@
  essentially tells VIM that anything that will be put into a buffer must be put into the buffer represented by the character that
  follows it. The `_` character is special in that it represents "no buffer" which means that whetever is deleted(d) will be thrown
  away and will keep `p` buffer clean.
+
+ * Split screen commands: https://linuxhint.com/how-to-use-vim-split-screen/
