@@ -38,3 +38,5 @@ This will parse all files starting with logfileprefix . Note that the -t  flag s
 Using Less
 Once the log content is open in less  it can be traversed using the arrow keys or HJKL (Vim shortcuts). The content can also be searched on using regular expressions. To trigger this we press forward slash followed by the regular expression and then RETURN . This will highlight all detected content that matches the expression. Navigating to the next match is done by pressing the 'n'  key while going to the previous match by pressing the 'N'  key.
 
+Using xargs
+xargs  is a very useful command that converts input from the console to command line arguments. This essentially means that it can be used to pipe the result of an ls | grep "xxxxx"  into a cp -t destDir  using ls | grep "xxxxx" | xargs cp -t destDir which would otherwise either require and awk or some iteration hack.
