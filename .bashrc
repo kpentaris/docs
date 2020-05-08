@@ -117,3 +117,10 @@ if ! shopt -oq posix; then
 fi
 
 LS_COLORS=$LS_COLORS:'di=0;36;40:ow=0;36;40'; export LS_COLORS
+
+alias ..="cd .."
+alias gs="git status"
+alias gp="git pull"
+alias gb="git branch"
+alias gc="git commit -m $1"
+
