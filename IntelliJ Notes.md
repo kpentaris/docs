@@ -16,7 +16,7 @@
 
 * Address already in use
 
-   Source: Not sure why but it seems that intellij some times (maybe after pc sleep?) caches the fact that a web service is in use and improperly logs that its port is already in use when trying to redeploy.
+   Source: Not sure why but it seems that intellij some times (maybe after pc sleep?) caches the fact that a web service is in use and improperly logs that its port is already in use when trying to redeploy. Before trying to troubleshoot this run `netstat -aob | grep <debug-port>` in the command line to check if the port is indeed in use.
    Fix A: Try to debug what exactly is cached. This usually happens when we are trying a debug deployment which can be checked by trying to deploy the application in Run mode. Additionally, if the application is successfully deployed in Run mode then IntelliJ seems to purge its cache and it can be started in Debug mode as well.
    Fix B: Invalidate caches and restart
    Fix C: Create a new server configuration
