@@ -18,3 +18,6 @@ time to run its shutdown logic and should not be used except if it seems the pro
 ### POWERSHELL
 `Set the network to Private`
 `Set-NetConnectionProfile -name "Unidentified network" -networkcategory private`
+
+### CMD
+`rd /s %systemdrive%\$Recycle.bin`
