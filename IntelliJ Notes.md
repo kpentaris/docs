@@ -20,3 +20,11 @@
    Fix A: Try to debug what exactly is cached. This usually happens when we are trying a debug deployment which can be checked by trying to deploy the application in Run mode. Additionally, if the application is successfully deployed in Run mode then IntelliJ seems to purge its cache and it can be started in Debug mode as well.
    Fix B: Invalidate caches and restart
    Fix C: Create a new server configuration
+
+* Using IntelliJ Build engine in a Gradle project can't find other project dependencies
+
+  Issue: The issue appears when trying to build a multimodule project using the IntelliJ Build system. What happens is that although IntelliJ properly detects dependent *modules* in the *editor* (i.e. they are not marked as compilation errors) when trying to build the project it fails to detect the dependent modules.
+  Source: Not sure but it seems it is another IntelliJ caching issue.
+  Fix A: Try the SDK/Language level fix.
+  Fix B: Another potential issue is that the *compilation output* directory of the project does not match the directory from which the project is run from. For example, if the IntelliJ Build produces the output under *out/production/classes* but we run the project from *build/classes* then this issue appears.
+  Fix C: If all directories are properly set up but the issue persists, it seems a caching issue is at work. Deleting the build directory (e.g. *build/...*) and rebuilding seems to fix the issue.
