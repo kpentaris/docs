@@ -28,3 +28,16 @@
   - Fix A: Try the SDK/Language level fix.
   - Fix B: Another potential issue is that the *compilation output* directory of the project does not match the directory from which the project is run from. For example, if the IntelliJ Build produces the output under *out/production/classes* but we run the project from *build/classes* then this issue appears.
   - Fix C: If all directories are properly set up but the issue persists, it seems a caching issue is at work. Deleting the build directory (e.g. *build/...*) and rebuilding seems to fix the issue.
+
+* Using IntelliJ Build engine with a Gradle project and IntelliJ deployment
+
+  - Goal: Using a Gradle based project but with the IntelliJ build system for recompiling updated class files and combining the Gradle and IntelliJ-Build results in order to deploy them with the IntelliJ deployment system.
+  - How to: The IntelliJ deployment system works best if an Artifact is provided for deployment. If a webapp directory is given for deployment then IntelliJ won't provide hot reload functionality. This means that an Artifact must be defined. The easiest way to do this is to define an empty artifact (i.e. we provide no output to it) but its *output* directory should be the webapp directory that gradle generates when creating an explodedWar. With this we can have gradle generate the exploded war and still deploy it with the IntelliJ system by deploying the artifact that points there.
+  - Hot reload: In order to properly do hot reload with the IntelliJ build system the compilation output of classes must be the explodedWar/WEB-INF/classes directory (since this is the directory that the deployment system listens to for changes in order to issue a hot reload). In order to set the output path there we must go through the Gradle script, *not* the IntelliJ project setup because it is overridden by the gradle script. The **idea** plugin must be used and the following configuration must be provided:
+  `idea {
+     module {
+       inheritOutputDirs = false
+       outputDir = file(explodedWarWebDir + "/WEB-INF/classes")
+     }
+   }`
+   By providing the `outputDir` directly, we change the *compile output path* which is under Project Structure > Modules > <module-name> > main. This means that a recompilation command like Ctrl + Shift + F9 will recompile the class and the .class file will be saved under the exploded war classes directory, ready for deployment.
