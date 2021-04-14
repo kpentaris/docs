@@ -26,8 +26,9 @@
     - Issue: The issue appears when trying to build a multimodule project using the IntelliJ Build system. What happens is that although IntelliJ properly detects dependent *modules* in the *editor* (i.e. they are not marked as compilation errors) when trying to build the project it fails to detect the dependent modules.
     - Source: Not sure but it seems it is another IntelliJ caching issue.
     - Fix A: Try the SDK/Language level fix.
-    - Fix B: Another potential issue is that the *compilation output* directory of the project does not match the directory from which the project is run from. For example, if the IntelliJ Build produces the output under *out/production/classes* but we run the project from *build/classes* then this issue appears.
+    - Fix B: Another potential issue is that the *compilation output* directory of the project does not match the directory from which the project is run from. For example, if the IntelliJ Build produces the output under *out/production/classes* but we run the project from *build/classes* due to the Gradle script then this issue appears.
     - Fix C: If all directories are properly set up but the issue persists, it seems a caching issue is at work. Deleting the build directory (e.g. *build/...*) and rebuilding seems to fix the issue.
+    - Fix D: Revert the compilation output to *out/production* or whatever the default is and issue an IntelliJ Build System compilation of the module (e.g. server.main). If done properly then IntelliJ should compile the whole module under *out/production/server*. Revert back to the *build/classes* output directory from within the Gradle script and this seems to reset the behavior, even if the *out* directory is deleted afterwards.
 
 * Using IntelliJ Build engine with a Gradle project and IntelliJ deployment
 
