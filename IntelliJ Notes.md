@@ -20,6 +20,8 @@
     - Fix A: Try to debug what exactly is cached. This usually happens when we are trying a debug deployment which can be checked by trying to deploy the application in Run mode. Additionally, if the application is successfully deployed in Run mode then IntelliJ seems to purge its cache and it can be started in Debug mode as well.
     - Fix B: Invalidate caches and restart
     - Fix C: Create a new server configuration
+###Gradle
+**When using Gradle with IntelliJ always remember to set the Gradle tool to the one you have installed on the machine. The options is under Settings > Build Tools > Gradle**
 
 * Using IntelliJ Build engine in a Gradle project can't find other project dependencies
 
